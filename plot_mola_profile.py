@@ -13,10 +13,10 @@ import matplotlib.pyplot as plt
 
 # Converts coordinate pair to an image pixel on a hypothetical map of mars, where each pixel is 1 degree.
 # Returns (p_x, p_y) pixel index from the top left corner. Images are a 2D array of pixels in row-major order, so p_x must start from the left side of the map and p_y must go from the top down.
-#   x: 					x coordinate.
-#   y: 					y coordinate.
-#   x_ew (optional): 	"w" for West of Mars' prime meridian. Alternatively, pass in a negative x-coordinate.
-#   y_ns (optional): 	"s" for South of Mars' equator. Alternatively, pass in a negative y-coordinate.
+#	x:					x coordinate.
+#	y:					y coordinate.
+#	x_ew (optional):	"w" for West of Mars' prime meridian. Alternatively, pass in a negative x-coordinate.
+#	y_ns (optional):	"s" for South of Mars' equator. Alternatively, pass in a negative y-coordinate.
 def convert_map_coordinates_to_pixel_index(x, y, x_ew="", y_ns=""):
 
 	if x_ew == "w" or x < 0:
@@ -61,10 +61,10 @@ def get_lat_from_scaled_pixel_index(y):
 	return unconverted_y
 
 # Given the equation of a line and either the x or y coordinates of 2 endpoints, returns a list of points along the line.
-#   m: 			slope of line.
-#   b: 			y-intercept of line.
-#   coord1: 	either x1 or y1.
-#   coord2: 	x2 if x1 was passed in, or y2 if y1 was passed in.
+#	m:			slope of line.
+#	b:			y-intercept of line.
+#	coord1:		either x1 or y1.
+#	coord2:		x2 if x1 was passed in, or y2 if y1 was passed in.
 #	x_or_y:		"x" if x coordinates were passed in or "y" if y coordinates were passed in.
 def get_points_on_line(m, b, coord1, coord2, x_or_y):
 
@@ -170,12 +170,12 @@ for point in line_points:
 	altitude_profile.append(altitude)
 	if lat_or_lon == "lon":
 		lon_coord = get_lon_from_scaled_pixel_index(point[0])
-		print("LONGITUDE at " + str(point[0]) + ": " + str(lon_coord))
+		# print("LONGITUDE at " + str(point[0]) + ": " + str(lon_coord))
 		lat_or_lon_coords.append(lon_coord)
 		x_axis_title = "Longitude"
 	else:
 		lat_coord = get_lat_from_scaled_pixel_index(point[1])
-		print("LATITUDE at " + str(point[1]) + ": " + str(lat_coord))
+		# print("LATITUDE at " + str(point[1]) + ": " + str(lat_coord))
 		lat_or_lon_coords.append(lat_coord)
 		x_axis_title = "Latitude"
 
@@ -189,3 +189,4 @@ plt.ylabel('Elevation (m)')
 plt.title("MOLA Elevation Profile")
 
 plt.show()
+
