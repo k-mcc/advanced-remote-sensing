@@ -24,8 +24,14 @@ import matplotlib.pyplot as plt
 import copy
 from scipy import constants 
 import math
+import argparse
 
-orbit_str = "1308401"
+parser = argparse.ArgumentParser(
+                    prog='download_files',
+                    description='Downloads SHARAD radargram, cluttergram, and geom table for a specified orbit.')
+parser.add_argument('-o', '--orbit')
+args = parser.parse_args()
+orbit_str = args.orbit
 orbit_str = orbit_str.zfill(8)
 
 # take in annotated radargram
