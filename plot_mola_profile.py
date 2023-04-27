@@ -25,7 +25,7 @@ def convert_map_coordinates_to_pixel_index(x, y, x_ew="", y_ns=""):
 		p_x = 180 + x
 
 	if y_ns == "s" or y < 0:
-		p_y = 90 + y
+		p_y = 90 + abs(y)
 	else:
 		p_y = 90 - abs(y)
 
@@ -53,10 +53,10 @@ def get_lat_from_scaled_pixel_index(y):
 
 	 # convert from unscaled pixel index to Mars y coordinate
 	if unscaled_y <= 90: # point on or above Mars' equator
-		unconverted_y = unscaled_y - 90
+		unconverted_y = abs(unscaled_y - 90)
 
 	else: # point below Mars' equator
-		unconverted_y = unscaled_y - 90 - 180
+		unconverted_y = ((unscaled_y) - 90) * -1
 
 	return unconverted_y
 
@@ -115,7 +115,7 @@ def get_line_from_point_pair(point1, point2):
 			x_or_y = "y"
 
 		# get the points along the line and their map coordinates
-		points_on_line = get_points_on_line(m, b, coord1, coord2, "x")
+		points_on_line = get_points_on_line(m, b, coord1, coord2, x_or_y)
 
 	else: # handle "no slope" case (vertical line)
 		m = None
@@ -128,15 +128,12 @@ def get_line_from_point_pair(point1, point2):
 	return points_on_line
 
 # Open MOLA DEM. Downloaded MOLA DEM from: https://astrogeology.usgs.gov/search/map/Mars/GlobalSurveyor/MOLA/Mars_MGS_MOLA_DEM_mosaic_global_463m
-mars = rasterio.open('Mars_MGS_MOLA_DEM_mosaic_global_463m.tif')
+mars = rasterio.open('./downloads/MOLA/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif')
 mars = mars.read()
 
 # Consider 2 coordinate pairs representing the endpoints of a line on a map of Mars.
 point1 = [-138, 18]
 point2 = [-126, 18]
-
-# point1 = [-130, 23]
-# point2 = [-130, 15]
 
 # Convert the point coordinates to pixel indices.
 (converted_x1, converted_y1) = convert_map_coordinates_to_pixel_index(point1[0],point1[1])
@@ -170,12 +167,10 @@ for point in line_points:
 	altitude_profile.append(altitude)
 	if lat_or_lon == "lon":
 		lon_coord = get_lon_from_scaled_pixel_index(point[0])
-		# print("LONGITUDE at " + str(point[0]) + ": " + str(lon_coord))
 		lat_or_lon_coords.append(lon_coord)
 		x_axis_title = "Longitude"
 	else:
 		lat_coord = get_lat_from_scaled_pixel_index(point[1])
-		# print("LATITUDE at " + str(point[1]) + ": " + str(lat_coord))
 		lat_or_lon_coords.append(lat_coord)
 		x_axis_title = "Latitude"
 
