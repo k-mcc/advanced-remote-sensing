@@ -1,6 +1,6 @@
 # AUTHOR:		Kate McCarthy (kem6ur@virginia.edu, kemccarthy6@gmail.com)
 # CREATED: 		November 2022 (Last modified April 2023)
-# DESCRIPTION:	Downloads SHARAD radargram, cluttergram, and geom table for a given orbit.
+# DESCRIPTION:	Downloads MOLA DEM and SHARAD radargram, cluttergram, and geom table for a given orbit.
 
 import requests
 import cv2
@@ -8,7 +8,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(
-                    prog='download_SHARAD_data',
+                    prog='download_files',
                     description='Downloads SHARAD radargram, cluttergram, and geom table for a specified orbit.')
 parser.add_argument('-o', '--orbit')
 args = parser.parse_args()
@@ -18,10 +18,17 @@ orbit_str = orbit_str.zfill(8)
 first_4_digits = str(orbit_str)[:4]
 
 # Set up initial directory structure if needed
-paths = ['./downloads/SHARAD/images/radargrams', './downloads/SHARAD/images/cluttergrams', './downloads/SHARAD/geom']
+paths = ['./downloads/SHARAD/images/radargrams', './downloads/SHARAD/images/cluttergrams', './downloads/SHARAD/geom','./downloads/MOLA']
 for path in paths:
 	if not os.path.exists(path):
 		os.makedirs(path)
+
+# Download MOLA DEM if not already downloaded
+mola_dem = './downloads/MOLA/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif'
+if not os.path.exists(mola_dem):
+	mola_dem_URL = 'https://planetarymaps.usgs.gov/mosaic/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif'
+	response = requests.get(mola_dem_URL)
+	open(mola_dem, "wb").write(response.content)
 
 # Get radargram
 radargram_file_name = "./downloads/SHARAD/images/radargrams/s_" + orbit_str + ".tif"
