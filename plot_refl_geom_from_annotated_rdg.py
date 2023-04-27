@@ -71,7 +71,7 @@ moccasin_pixels = np.argwhere(cv2.inRange(img, (181, 228, 255), (181, 228, 255))
 print("moccasin pixels", moccasin_pixels)
 
 pixels_by_color = [red_pixels,blue_pixels,green_pixels,magenta_pixels,cyan_pixels,mediumslateblue_pixels,steelblue_pixels,moccasin_pixels]
-color_names = ["red", "green", "blue", "magenta", "cyan", "mediumslateblue","steelblue","moccasin"]
+color_names = ["red", "blue", "green", "magenta", "cyan", "mediumslateblue","steelblue","moccasin"]
 
 # record pixel coordinates of different reflectors by color
 for pixel_color in pixels_by_color:
